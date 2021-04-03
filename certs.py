@@ -66,7 +66,7 @@ class DictCertifications(Certifications):
         return self.info[type_][name]
 
 
-class CertInfo:
+class CertInfoBase:
 
     def cert_seeds(self, idxn):
         raise NotImplementedError
@@ -82,11 +82,3 @@ class CertInfo:
 
     def cert_tmetric_type(self, idxn):
         raise NotImplementedError
-
-
-def test():
-    print("hm...")
-
-
-if __name__ == '__main__':
-    test()

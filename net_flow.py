@@ -465,7 +465,7 @@ class NetFlowPriv(Debug):
         *
         """
 
-        self.netflow_sanity_check_tree(seed, pred_list, node_list)
+        # self.netflow_sanity_check_tree(seed, pred_list, node_list)
         # if enabled, start from tree flow rather than zero
         self.netflow_from_tree(pred_list, node_list)
 

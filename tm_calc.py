@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """	tm_calc.py: Trust Metric Calculation
     Copyright (C) 2001 Luke Kenneth Casson Leighton <lkcl@samba-tng.org>
 
@@ -38,6 +37,7 @@
 """
 
 from net_flow import NetFlow, Debug
+from cert_info import CertInfo
 
 # No profile can have a profile name of None: this is reserved
 # as the SUPERSINK.
@@ -269,40 +269,6 @@ class TrustMetric(Debug):
 
 
 def test():
-    from certs import CertInfo
-
-    class TestCertInfo(CertInfo):
-
-        def __init__(self):
-            self.info = {'like': {'levels': ['none', "don't care", 'good', 'best'],
-                                  'seeds': ['luke', 55],
-                                  'min level': 'none',
-                                  'default level': "don't care",
-                                  'type': 'to'
-                                  },
-                         'hate': {'levels': ['none', "don't care", 'dislike',
-                                             'looks CAN kill'],
-                                  'seeds': ['heather', 10],
-                                  'min level': 'none',
-                                  'default level': "don't care",
-                                  'type': 'to'
-                                  }}
-
-        def cert_seeds(self, idxn):
-            return self.info[idxn]['seeds']
-
-        def cert_levels(self, idxn):
-            return self.info[idxn]['levels']
-
-        def cert_level_default(self, idxn):
-            return self.info[idxn]['default level']
-
-        def cert_level_min(self, idxn):
-            return self.info[idxn]['min level']
-
-        def cert_tmetric_type(self, idxn):
-            return self.info[idxn]['type']
-
     from pprint import pprint
     from profile import Profiles, Profile
     from certs import DictCertifications
@@ -312,54 +278,63 @@ def test():
 
     p = Profiles(Profile, DictCertifications)
 
-    p.add_profile('luke')
-    p.add_profile('heather')
-    p.add_profile('bob')
-    p.add_profile('mary')
-    p.add_profile('lesser fleas')
-    p.add_profile('little fleas')
-    p.add_profile('fleas')
-    p.add_profile('robbie the old crock pony')
-    p.add_profile('tart, the flat-faced persian cat')
-    p.add_profile('mo the mad orange pony')
-    p.add_profile(55)
-    p.add_profile(10)
-    p.add_profile(2)
-    p.add_profile('fleas ad infinitum')
+    # p.add_profile('luke')
+    # p.add_profile('heather')
+    # p.add_profile('bob')
+    # p.add_profile('mary')
+    # p.add_profile('lesser fleas')
+    # p.add_profile('little fleas')
+    # p.add_profile('fleas')
+    # p.add_profile('robbie the old crock pony')
+    # p.add_profile('tart, the flat-faced persian cat')
+    # p.add_profile('mo the mad orange pony')
+    # p.add_profile(55)
+    # p.add_profile(10)
+    # p.add_profile(2)
+    # p.add_profile('fleas ad infinitum')
 
-    p.add_cert('luke', 'like', 'heather', 'best')
+    p.add_profile("bob")
+    p.add_profile("anna")
+    p.add_profile("ogi")
+    p.add_profile("mark")
 
-    p.add_cert('heather', 'like', 'luke', 'best')
-    p.add_cert('heather', 'like', 'robbie the old crock pony', 'best')
-    p.add_cert('heather', 'like', 'tart, the flat-faced persian cat', 'best')
-    p.add_cert('heather', 'like', 'mo the mad orange pony', 'best')
+    p.add_cert("bob", "like", "anna", 'best')
+    p.add_cert("ogi", 'like', 'mark', 'best')
+    p.add_cert("mark", 'like', 'bob', 'good')
 
-    p.add_cert('bob', 'like', 'mary', 'good')
-    p.add_cert('bob', 'like', 'heather', 'good')
+    # p.add_cert('luke', 'like', 'heather', 'best')
+    #
+    # p.add_cert('heather', 'like', 'luke', 'best')
+    # p.add_cert('heather', 'like', 'robbie the old crock pony', 'best')
+    # p.add_cert('heather', 'like', 'tart, the flat-faced persian cat', 'best')
+    # p.add_cert('heather', 'like', 'mo the mad orange pony', 'best')
+    #
+    # p.add_cert('bob', 'like', 'mary', 'good')
+    # p.add_cert('bob', 'like', 'heather', 'good')
+    #
+    # p.add_cert('mary', 'like', 'bob', 'good')
+    #
+    # p.add_cert('lesser fleas', 'like', 'fleas ad infinitum', 'good')
+    # p.add_cert('little fleas', 'like', 'lesser fleas', 'good')
+    # p.add_cert('fleas', 'like', 'little fleas', 'good')
+    # p.add_cert('robbie the old crock pony', 'like', 'fleas', 'best')
+    # p.add_cert(55, 'like', 10, 'none')
+    # p.add_cert(10, 'like', 2, 'best')
+    #
+    # p.add_cert('heather', 'hate', 'bob', 'dislike')
+    # p.add_cert('heather', 'hate', 'fleas', 'looks CAN kill')
+    # p.add_cert('fleas', 'hate', 'mary', 'dislike')
+    # p.add_cert(10, 'hate', 55, 'looks CAN kill')
 
-    p.add_cert('mary', 'like', 'bob', 'good')
-
-    p.add_cert('lesser fleas', 'like', 'fleas ad infinitum', 'good')
-    p.add_cert('little fleas', 'like', 'lesser fleas', 'good')
-    p.add_cert('fleas', 'like', 'little fleas', 'good')
-    p.add_cert('robbie the old crock pony', 'like', 'fleas', 'best')
-    p.add_cert(55, 'like', 10, 'none')
-    p.add_cert(10, 'like', 2, 'best')
-
-    p.add_cert('heather', 'hate', 'bob', 'dislike')
-    p.add_cert('heather', 'hate', 'fleas', 'looks CAN kill')
-    p.add_cert('fleas', 'hate', 'mary', 'dislike')
-    p.add_cert(10, 'hate', 55, 'looks CAN kill')
-
-    t = TrustMetric(TestCertInfo(), p)
-    r = t.tmetric_calc('like')
+    t = TrustMetric(CertInfo(), p)
+    r = t.tmetric_calc('like', ['anna'])
     pprint(r)
 
-    r = t.tmetric_calc('like', ['heather'])
-    pprint(r)
-
-    r = t.tmetric_calc('hate')
-    pprint(r)
+    # r = t.tmetric_calc('like', ['heather'])
+    # pprint(r)
+    #
+    # r = t.tmetric_calc('hate')
+    # pprint(r)
 
 
 if __name__ == '__main__':
