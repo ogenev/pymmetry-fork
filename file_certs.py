@@ -137,8 +137,8 @@ class FileCertifications(DictCertifications):
 
 class FileProfile(Profile):
 
-	def __init__(self, name, CertClass):
-		Profile.__init__(self, name, CertClass)
+	def __init__(self, name, cert_class):
+		Profile.__init__(self, name, cert_class)
 		self._certs_by_subj.set_filename("users/"+str(name)+"/certs.subj")
 		self._certs_by_issuer.set_filename("users/"+str(name)+"/certs.issuer")
 

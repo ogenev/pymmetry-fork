@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """	certs.py: Certification base classes.
-	Copyright (C) 2001 Luke Kenneth Casson Leighton <lkcl@samba-tng.org>
+    Copyright (C) 2001 Luke Kenneth Casson Leighton <lkcl@samba-tng.org>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,74 +18,75 @@
 
 """
 
+
 class Certifications:
+    def cert_keys(self):
+        raise NotImplementedError
 
-	def cert_keys(self):
-		raise NotImplementedError
+    def certs_by_type(self, type_):
+        raise NotImplementedError
 
-	def certs_by_type(self, type):
-		raise NotImplementedError
+    def cert_type_keys(self, type_, name):
+        raise NotImplementedError
 
-	def cert_type_keys(self, type, name):
-		raise NotImplementedError
+    def add(self, type_, name, level):
+        raise NotImplementedError
 
-	def add(self, type, name, level):
-		raise NotImplementedError
+    def remove(self, type_, name):
+        raise NotImplementedError
 
-	def remove(self, type, name):
-		raise NotImplementedError
-		
-	def cert_level(self, type, name):
-		raise NotImplementedError
+    def cert_level(self, type_, name):
+        raise NotImplementedError
+
 
 class DictCertifications(Certifications):
 
-	def __init__(self):
-		self.info = {}
+    def __init__(self):
+        self.info = {}
 
-	def cert_keys(self):
-		return self.info.keys()
+    def cert_keys(self):
+        return self.info.keys()
 
-	def certs_by_type(self, type):
-		return self.info[type]
+    def certs_by_type(self, type_):
+        return self.info[type_]
 
-	def cert_type_keys(self, type, name):
-		return self.info[type].keys()
+    def cert_type_keys(self, type_, name):
+        return self.info[type_].keys()
 
-	def add(self, type, name, level):
-		if not self.info.has_key(type):
-			self.info[type] = {}
-		self.info[type][name] = level
+    def add(self, type_, name, level):
+        if type_ is not self.info.keys():
+            self.info[type_] = {}
+        self.info[type_][name] = level
 
-	def remove(self, type, name):
-		if self.info.has_key(type) and \
-		   self.info.type.has_key(name):
-			del self.info[type][name]
-		
-	def cert_level(self, type, name):
-		return self.info[type][name]
+    def remove(self, type_, name):
+        if type_ in self.info.keys() and name in self.info[type_].keys():
+            del self.info[type_][name]
+
+    def cert_level(self, type_, name):
+        return self.info[type_][name]
+
 
 class CertInfo:
 
-	def cert_seeds(self, idxn):
-		raise NotImplementedError
+    def cert_seeds(self, idxn):
+        raise NotImplementedError
 
-	def cert_levels(self, idxn):
-		raise NotImplementedError
+    def cert_levels(self, idxn):
+        raise NotImplementedError
 
-	def cert_level_default(self, idxn):
-		raise NotImplementedError
+    def cert_level_default(self, idxn):
+        raise NotImplementedError
 
-	def cert_level_min(self, idxn):
-		raise NotImplementedError
+    def cert_level_min(self, idxn):
+        raise NotImplementedError
 
-	def cert_tmetric_type(self, idxn):
-		raise NotImplementedError
+    def cert_tmetric_type(self, idxn):
+        raise NotImplementedError
 
 
 def test():
-	print "hm..."
+    print("hm...")
+
 
 if __name__ == '__main__':
-	test()
-
+    test()
